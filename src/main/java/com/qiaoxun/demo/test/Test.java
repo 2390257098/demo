@@ -19,7 +19,6 @@ import java.util.*;
 public class Test {
     private static Map<String, String> cookies = null;
     private static Document document=null;
-    private static List<String> urls=new ArrayList<>();
     private static List<String> imgUrlSqls=new ArrayList<>();
     private static QiswlManhua qiswlManhua=new QiswlManhua();
     private static QiswlCapterWithBLOBs bloBs=new QiswlCapterWithBLOBs();
@@ -81,12 +80,13 @@ public class Test {
             System.out.println("这是第"+i+"个漫画");
             //获取封面图片地址
             String image=elements.get(i-1).select("a > div.cover > img").attr("src").trim();
+            System.out.println(image+"------------");
             //下载封面图片
-            DownloadImg.download1(image,i);
+            String newImage=DownloadImg.download1(image,i);
             //获取漫画url
             String url = init+elements.get(i-1).select("a").attr("href").trim();
             //带着漫画url再次发请求，进入漫画内部页
-            document = Jsoup.connect(url).cookies(cookies).get();
+            document = Jsoup.connect(url).cookies(cookies).timeout(1000*60*2).get();
             //开始获取目标数据
 
             //名称
@@ -123,6 +123,7 @@ public class Test {
             int chapters=Integer.parseInt(lastChapterTitle.substring(3,lastChapterTitle.length()-1));
             qiswlManhua.setLastChapter("第"+chapters+"话");
             qiswlManhua.setLastChapterTitle("第"+chapters+"话");
+            qiswlManhua.setImage(newImage);
             //System.out.println(qiswlManhua);
             qiswlManhua.setCjid(i+"");
             qiswlManhua.setId(i);
@@ -169,7 +170,7 @@ public class Test {
         SqlSession sqlSession=MyBatisUtil.createSqlSession();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
-        document = Jsoup.connect(initUrl).cookies(cookies).post();
+        document = Jsoup.connect(initUrl).cookies(cookies).timeout(1000*60*2).post();
         Elements elements = document.select("#html_box").select(".item");
         cartoons=elements.size();
         for (int i=1;i<=cartoons;i++) {
@@ -193,7 +194,7 @@ public class Test {
                 sqlSession.commit();
                 int html=Integer.parseInt(lastChapterTitle.substring(3,lastChapterTitle.length()-1));
                 for (int sql=Integer.parseInt(last.substring(1,last.length()-1));sql<html;sql++){
-                    document = Jsoup.connect(chapterUrl.substring(0,chapterUrl.length()-1)+sql).cookies(cookies).get();
+                    document = Jsoup.connect(chapterUrl.substring(0,chapterUrl.length()-1)+sql).cookies(cookies).timeout(1000*60*2).get();
                     Elements elements2=document.select(".read-article").select(".item");
                     System.out.println("第"+(sql+1)+"话里边有"+elements2.size()+"张图片");
                     //j代表第q个章节里的第j张图片
