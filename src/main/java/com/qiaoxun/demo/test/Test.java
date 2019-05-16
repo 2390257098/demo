@@ -24,7 +24,6 @@ public class Test {
     private static QiswlCapterWithBLOBs bloBs=new QiswlCapterWithBLOBs();
     private static String imgUrlSql;
     public static int cartoons=0;
-    public static Date date=new Date();
 
     /**
      * 模拟登录获取cookie和sessionid
@@ -59,7 +58,7 @@ public class Test {
      * 获取信息  下载图片  数据入库
      */
     public static void parse() throws IOException {
-
+        Date date=new Date();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
         document = Jsoup.connect(initUrl).cookies(cookies).post();
@@ -113,7 +112,7 @@ public class Test {
             qiswlManhua.setMark(Integer.parseInt(mark.substring(0, mark.indexOf("人"))));
             //最新章节
             String lastChapterTitle=document.select("#chapters > div.ch > div > span").text();
-            System.out.println(lastChapterTitle);
+
             //获取第一章节的url,然后更换这个url的最后一个参数，一直到这个漫画的最新章节数
             String chapterUrl=document.select("#html_box > div:nth-child(1) > a").attr("href").trim();
             //截取该漫画最新一期编号
@@ -123,12 +122,11 @@ public class Test {
             qiswlManhua.setLastChapter("第"+chapters+"话");
             qiswlManhua.setLastChapterTitle("第"+chapters+"话");
             qiswlManhua.setImage(newImage);
-            //System.out.println(qiswlManhua);
             qiswlManhua.setCjid(i+"");
-            qiswlManhua.setId(i);
             //获取到的数据入库
             sqlSession.getMapper(QiswlManhuaDao.class).insertSelective(qiswlManhua);
             sqlSession.commit();
+            System.err.println(qiswlManhua.getId()+"00000000000000");
             System.out.println("目前更新到第"+chapters+"话");
             //拿到新的url,再次发起请求
             //q代表第i个漫画里的第q个章节
@@ -166,6 +164,8 @@ public class Test {
     }
 
     public static void update() throws IOException {
+
+        Date date=new Date();
         SqlSession sqlSession=MyBatisUtil.createSqlSession();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取

@@ -17,7 +17,7 @@ public class CommonMethodsImpl implements CommonMethods {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
         //savaImage(img, "D:\\javaCrawJWXT"+"/bookimages/"+cartoonId, "/image.jpg");
-        return "/bookimages/"+cartoonId+"/image/"+cartoonId+"image.jpg";
+        return "/bookimages/"+cartoonId+"/image.jpg";
     }
 
     @Override
