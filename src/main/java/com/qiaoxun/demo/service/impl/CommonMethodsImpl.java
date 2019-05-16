@@ -1,18 +1,18 @@
 package com.qiaoxun.demo.service.impl;
 
-import com.qiaoxun.demo.service.CommonMethods;
+//import com.qiaoxun.demo.service.CommonMethods;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Map;
-@Service
-public class CommonMethodsImpl implements CommonMethods {
+
+public class CommonMethodsImpl /*implements CommonMethods */{
 
     private static Map<String, String> cookies = null;
 
-    @Override
+
     public String download1(String url, int cartoonId) throws IOException {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
@@ -20,7 +20,7 @@ public class CommonMethodsImpl implements CommonMethods {
         return "/bookimages/"+cartoonId+"/image.jpg";
     }
 
-    @Override
+
     public String download2(String url, int cartoonId) throws IOException {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
@@ -28,7 +28,7 @@ public class CommonMethodsImpl implements CommonMethods {
         return "/bookimages/"+cartoonId+"/cover.jpg";
     }
 
-    @Override
+
     public String download3(String url, int cartoonId, int chapterId, int imgId) throws IOException {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
@@ -36,7 +36,7 @@ public class CommonMethodsImpl implements CommonMethods {
         return "/bookimages/"+cartoonId+"/chapter"+chapterId+"/"+imgId+".jpg";
     }
 
-    @Override
+
     public void savaImage(byte[] img, String filePath, String fileName) {
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
@@ -110,6 +110,7 @@ public class CommonMethodsImpl implements CommonMethods {
         //请求url获取响应信息
         Connection.Response res = connect.ignoreContentType(true).method(Connection.Method.POST).execute();// 执行请求
         // 获取返回的cookie
+        System.out.println(res.cookies());
         return res.cookies();
     }
 

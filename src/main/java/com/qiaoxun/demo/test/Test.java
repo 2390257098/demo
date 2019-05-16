@@ -5,6 +5,7 @@ import com.qiaoxun.demo.dao.QiswlCapterDao;
 import com.qiaoxun.demo.dao.QiswlManhuaDao;
 import com.qiaoxun.demo.pojo.QiswlCapterWithBLOBs;
 import com.qiaoxun.demo.pojo.QiswlManhua;
+import com.qiaoxun.demo.service.impl.CommonMethodsImpl;
 import com.qiaoxun.util.DownloadImg;
 import com.qiaoxun.util.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -223,7 +224,6 @@ public class Test {
 
     public static void main(String[] args) throws IOException {
 
-        login();
         Scanner input=new Scanner(System.in);
         int num = -1;
         do {

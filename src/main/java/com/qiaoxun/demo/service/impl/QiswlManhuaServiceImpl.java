@@ -23,37 +23,36 @@ import java.util.Map;
 
 @Service
 public class QiswlManhuaServiceImpl implements QiswlManhuaService {
-    private static Map<String, String> cookies = null;
-    private static Document document=null;
-    private static List<String> imgUrlSqls=new ArrayList<>();
-    private static QiswlManhua qiswlManhua=new QiswlManhua();
-    private static QiswlCapterWithBLOBs bloBs=new QiswlCapterWithBLOBs();
+    Map<String, String> cookies = null;
+    Document document=null;
+    List<String> imgUrlSqls=new ArrayList<>();
+    QiswlManhua qiswlManhua=new QiswlManhua();
+    private  QiswlCapterWithBLOBs bloBs=new QiswlCapterWithBLOBs();
     public static int cartoons=0;
-    private static String imgUrlSql;
+    String imgUrlSql;
 
 
     @Autowired
-    private static QiswlManhuaDao manhuaDao;
+    private  QiswlManhuaDao manhuaDao;
     @Autowired
-    private static QiswlChapterServiceImpl chapterService;
-    @Autowired
-    private static CommonMethodsImpl methods;
+    private  QiswlChapterServiceImpl chapterService;
+
+    CommonMethodsImpl methods = new CommonMethodsImpl();
 
     @Override
     public int insertSelective(QiswlManhua record) {
         return manhuaDao.insertSelective(record);
     }
-
-
     /**
      * 爬取数据  下载图片  数据入库
      */
     @Override
     public void parse() throws IOException {
-        System.out.println(methods.login()+"----------------");
+        cookies=methods.login();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
-        document = Jsoup.connect(initUrl).cookies(cookies).post();
+        document = Jsoup.connect(initUrl).cookies(cookies).timeout(1000*60*2).post();
+
         String init="http://www.yymh8.com";
         //选择器定位
         Elements elements = document.select("#html_box").select(".item");
@@ -153,7 +152,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
 
     @Override
     public void update() throws IOException {
-        methods.login();
+        cookies=methods.login();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
         document = Jsoup.connect(initUrl).cookies(cookies).post();

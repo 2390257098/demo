@@ -1,3 +1,4 @@
+/*
 package com.qiaoxun.demo.service;
 
 import java.io.IOException;
@@ -14,3 +15,4 @@ public interface CommonMethods {
 
     Map<String, String> login() throws IOException;
 }
+*/

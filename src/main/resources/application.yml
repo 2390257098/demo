@@ -8,8 +8,9 @@ spring:
         url: jdbc:mysql://212.64.83.217:3306/crawler?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
         username: root
         password: houxu@900813
-#    thymeleaf:
-#        cache: false
-#        mode: LEGACYHTML5
+    thymeleaf:
+        cache: false
+        mode: LEGACYHTML5
+        prefix: classpath:/templates/
 mybatis:
   mapper-locations: classpath:mapper/*

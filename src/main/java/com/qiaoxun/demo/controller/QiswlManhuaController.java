@@ -1,7 +1,7 @@
 package com.qiaoxun.demo.controller;
 
 
-import com.qiaoxun.demo.service.CommonMethods;
+
 import com.qiaoxun.demo.service.QiswlCapterService;
 import com.qiaoxun.demo.service.QiswlManhuaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,7 @@ import java.io.IOException;
 @Controller
 public class QiswlManhuaController {
 
-    @Autowired
-    private CommonMethods methods;
-    @Autowired
-    private QiswlCapterService qiswlCapterService;
+
     @Autowired
     private QiswlManhuaService manhuaService;
 
@@ -31,5 +28,9 @@ public class QiswlManhuaController {
     @GetMapping("/update")
     public void update() throws IOException {
         manhuaService.update();
+    }
+    @GetMapping("/a")
+    public String aa(){
+        return "index.html";
     }
 }
