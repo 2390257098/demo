@@ -80,7 +80,6 @@ public class Test {
             System.out.println("这是第"+i+"个漫画");
             //获取封面图片地址
             String image=elements.get(i-1).select("a > div.cover > img").attr("src").trim();
-            System.out.println(image+"------------");
             //下载封面图片
             String newImage=DownloadImg.download1(image,i);
             //获取漫画url
@@ -178,7 +177,7 @@ public class Test {
             document = Jsoup.connect(url).cookies(cookies).get();
             String title=document.select("body > div.cover-box > div.container > div.title").text();
             String lastChapterTitle=document.select("#chapters > div.ch > div > span").text();
-            System.out.println(lastChapterTitle+"-------------");
+
             String lastChapter="第"+lastChapterTitle.substring(3);
             String last=sqlSession.getMapper(QiswlManhuaDao.class).selectLastChapterByTitle(title);
             System.out.println(last);
@@ -225,7 +224,24 @@ public class Test {
     public static void main(String[] args) throws IOException {
 
         login();
-        parse();
-        //update();
+        Scanner input=new Scanner(System.in);
+        int num = -1;
+        do {
+            System.out.println("欢迎使用小蜘蛛，能帮您做些什么呢？");
+            System.out.println("1.初始化");
+            System.out.println("2.更新");
+            System.out.println("请选择：");
+            int choose=input.nextInt();
+            switch (choose){
+                case 1:
+                    System.out.println("等待时间可能会有点长，正在努力......");
+                    parse();
+                    break;
+                case 2:
+                    System.out.println("等待时间可能会有点长，正在努力......");
+                    update();
+                    break;
+            }
+        }while (num == 0);
     }
 }
