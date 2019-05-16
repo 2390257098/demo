@@ -64,7 +64,7 @@ public class Test {
 
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
-        document = Jsoup.connect(initUrl).cookies(cookies).post();
+        document = Jsoup.connect(initUrl).cookies(cookies).timeout(1000*60*2).post();
         String init="http://www.yymh8.com";
         //选择器定位
         Elements elements = document.select("#html_box").select(".item");
@@ -125,6 +125,7 @@ public class Test {
             qiswlManhua.setLastChapterTitle("第"+chapters+"话");
             System.out.println(qiswlManhua);
             qiswlManhua.setId(i);
+            qiswlManhua.setImage(image);
             //获取到的数据入库
             sqlSession.getMapper(QiswlManhuaDao.class).insertSelective(qiswlManhua);
             sqlSession.commit();
