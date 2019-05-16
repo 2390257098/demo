@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiaoxun.demo.dao.QiswlManhuaDao">
+  <resultMap id="BaseResultMap" type="com.qiaoxun.demo.pojo.QiswlManhua">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="lanmu_id" jdbcType="INTEGER" property="lanmuId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="sort" jdbcType="VARCHAR" property="sort" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="view" jdbcType="INTEGER" property="view" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="auther" jdbcType="VARCHAR" property="auther" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="mark" jdbcType="INTEGER" property="mark" />
+    <result column="ticai_id" jdbcType="INTEGER" property="ticaiId" />
+    <result column="duzhequn_id" jdbcType="INTEGER" property="duzhequnId" />
+    <result column="diyu_id" jdbcType="INTEGER" property="diyuId" />
+    <result column="mhstatus" jdbcType="TINYINT" property="mhstatus" />
+    <result column="tjswitch" jdbcType="BIT" property="tjswitch" />
+    <result column="isfree" jdbcType="BIT" property="isfree" />
+    <result column="cjid" jdbcType="VARCHAR" property="cjid" />
+    <result column="cjstatus" jdbcType="TINYINT" property="cjstatus" />
+    <result column="cjname" jdbcType="VARCHAR" property="cjname" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="last_chapter_title" jdbcType="VARCHAR" property="lastChapterTitle" />
+    <result column="searchnums" jdbcType="INTEGER" property="searchnums" />
+    <result column="last_chapter" jdbcType="VARCHAR" property="lastChapter" />
+    <result column="isjingpin" jdbcType="BIT" property="isjingpin" />
+    <result column="xianmian" jdbcType="BIT" property="xianmian" />
+    <result column="cover" jdbcType="VARCHAR" property="cover" />
+    <result column="ishot" jdbcType="BIT" property="ishot" />
+    <result column="issole" jdbcType="BIT" property="issole" />
+    <result column="isnew" jdbcType="BIT" property="isnew" />
+    <result column="h" jdbcType="BIT" property="h" />
+    <result column="vipcanread" jdbcType="BIT" property="vipcanread" />
+    <result column="pingfen" jdbcType="VARCHAR" property="pingfen" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, lanmu_id, create_time, update_time, sort, `status`, `view`, image, `type`, 
+    auther, `desc`, mark, ticai_id, duzhequn_id, diyu_id, mhstatus, tjswitch, isfree, 
+    cjid, cjstatus, cjname, keyword, last_chapter_title, searchnums, last_chapter, isjingpin, 
+    xianmian, cover, ishot, issole, isnew, h, vipcanread, pingfen
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qiswl_manhua
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.qiaoxun.demo.pojo.QiswlManhua" useGeneratedKeys="true">
+    insert into qiswl_manhua
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        title,
+      </if>
+      <if test="lanmuId != null">
+        lanmu_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="view != null">
+        `view`,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="auther != null">
+        auther,
+      </if>
+      <if test="desc != null">
+        `desc`,
+      </if>
+      <if test="mark != null">
+        mark,
+      </if>
+      <if test="ticaiId != null">
+        ticai_id,
+      </if>
+      <if test="duzhequnId != null">
+        duzhequn_id,
+      </if>
+      <if test="diyuId != null">
+        diyu_id,
+      </if>
+      <if test="mhstatus != null">
+        mhstatus,
+      </if>
+      <if test="tjswitch != null">
+        tjswitch,
+      </if>
+      <if test="isfree != null">
+        isfree,
+      </if>
+      <if test="cjid != null">
+        cjid,
+      </if>
+      <if test="cjstatus != null">
+        cjstatus,
+      </if>
+      <if test="cjname != null">
+        cjname,
+      </if>
+      <if test="keyword != null">
+        keyword,
+      </if>
+      <if test="lastChapterTitle != null">
+        last_chapter_title,
+      </if>
+      <if test="searchnums != null">
+        searchnums,
+      </if>
+      <if test="lastChapter != null">
+        last_chapter,
+      </if>
+      <if test="isjingpin != null">
+        isjingpin,
+      </if>
+      <if test="xianmian != null">
+        xianmian,
+      </if>
+      <if test="cover != null">
+        cover,
+      </if>
+      <if test="ishot != null">
+        ishot,
+      </if>
+      <if test="issole != null">
+        issole,
+      </if>
+      <if test="isnew != null">
+        isnew,
+      </if>
+      <if test="h != null">
+        h,
+      </if>
+      <if test="vipcanread != null">
+        vipcanread,
+      </if>
+      <if test="pingfen != null">
+        pingfen,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="lanmuId != null">
+        #{lanmuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="view != null">
+        #{view,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="auther != null">
+        #{auther,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=INTEGER},
+      </if>
+      <if test="ticaiId != null">
+        #{ticaiId,jdbcType=INTEGER},
+      </if>
+      <if test="duzhequnId != null">
+        #{duzhequnId,jdbcType=INTEGER},
+      </if>
+      <if test="diyuId != null">
+        #{diyuId,jdbcType=INTEGER},
+      </if>
+      <if test="mhstatus != null">
+        #{mhstatus,jdbcType=TINYINT},
+      </if>
+      <if test="tjswitch != null">
+        #{tjswitch,jdbcType=BIT},
+      </if>
+      <if test="isfree != null">
+        #{isfree,jdbcType=BIT},
+      </if>
+      <if test="cjid != null">
+        #{cjid,jdbcType=VARCHAR},
+      </if>
+      <if test="cjstatus != null">
+        #{cjstatus,jdbcType=TINYINT},
+      </if>
+      <if test="cjname != null">
+        #{cjname,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="lastChapterTitle != null">
+        #{lastChapterTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="searchnums != null">
+        #{searchnums,jdbcType=INTEGER},
+      </if>
+      <if test="lastChapter != null">
+        #{lastChapter,jdbcType=VARCHAR},
+      </if>
+      <if test="isjingpin != null">
+        #{isjingpin,jdbcType=BIT},
+      </if>
+      <if test="xianmian != null">
+        #{xianmian,jdbcType=BIT},
+      </if>
+      <if test="cover != null">
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="ishot != null">
+        #{ishot,jdbcType=BIT},
+      </if>
+      <if test="issole != null">
+        #{issole,jdbcType=BIT},
+      </if>
+      <if test="isnew != null">
+        #{isnew,jdbcType=BIT},
+      </if>
+      <if test="h != null">
+        #{h,jdbcType=BIT},
+      </if>
+      <if test="vipcanread != null">
+        #{vipcanread,jdbcType=BIT},
+      </if>
+      <if test="pingfen != null">
+        #{pingfen,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectLastChapterByTitle" parameterType="java.lang.String" resultType="java.lang.String">
+    select last_chapter from qiswl_manhua where title = #{title,jdbcType=VARCHAR};
+  </select>
+  <update id="updateLastChapterByTitle" parameterType="java.lang.String">
+    update qiswl_manhua set last_chapter = #{last_chapter,jdbcType=VARCHAR} where title=  #{title,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiaoxun.demo.dao.QiswlCapterDao">
+  <resultMap id="BaseResultMap" type="com.qiaoxun.demo.pojo.QiswlCapter">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="manhua_id" jdbcType="INTEGER" property="manhuaId" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="isvip" jdbcType="CHAR" property="isvip" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="view" jdbcType="INTEGER" property="view" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="cjid" jdbcType="VARCHAR" property="cjid" />
+    <result column="cjname" jdbcType="VARCHAR" property="cjname" />
+    <result column="switch1" property="switch1" />
+    <result column="cjstatus" jdbcType="TINYINT" property="cjstatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.qiaoxun.demo.pojo.QiswlCapterWithBLOBs">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="imagelist" jdbcType="LONGVARCHAR" property="imagelist" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, image, create_time, update_time, manhua_id, sort, isvip, score, `view`, 
+    `type`, cjid, cjname, switch, cjstatus
+  </sql>
+  <sql id="Blob_Column_List">
+    content, imagelist
+  </sql>
+
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.qiaoxun.demo.pojo.QiswlCapterWithBLOBs" useGeneratedKeys="true">
+    insert into qiswl_capter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        title,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="manhuaId != null">
+        manhua_id,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="isvip != null">
+        isvip,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="view != null">
+        `view`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="cjid != null">
+        cjid,
+      </if>
+      <if test="cjname != null">
+        cjname,
+      </if>
+      <if test="switch1 != null">
+        switch1,
+      </if>
+      <if test="cjstatus != null">
+        cjstatus,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="imagelist != null">
+        imagelist,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manhuaId != null">
+        #{manhuaId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isvip != null">
+        #{isvip,jdbcType=CHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="view != null">
+        #{view,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="cjid != null">
+        #{cjid,jdbcType=VARCHAR},
+      </if>
+      <if test="cjname != null">
+        #{cjname,jdbcType=VARCHAR},
+      </if>
+      <if test="switch1 != null">
+        #{switch1,jdbcType=BIT},
+      </if>
+      <if test="cjstatus != null">
+        #{cjstatus,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imagelist != null">
+        #{imagelist,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

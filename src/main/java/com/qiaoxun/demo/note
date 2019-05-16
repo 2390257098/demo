@@ -1,0 +1,21 @@
+
+Exception in thread "main" org.apache.ibatis.exceptions.PersistenceException:
+### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 848,951 milliseconds ago.  The last packet sent successfully to the server was 848,963 milliseconds ago.
+### The error may exist in resources/QiswlManhuaDao.xml
+### The error may involve com.qiaoxun.demo.dao.QiswlManhuaDao.insertSelective-Inline
+### The error occurred while setting parameters
+### SQL: insert into qiswl_manhua      ( title,                                                          `view`,                                     auther,                       `desc`,                       mark,                                                                                      keyword,                       last_chapter_title,                              last_chapter,                                     cover )       values ( ?,                                                          ?,                                     ?,                       ?,                       ?,                                                                                      ?,                       ?,                              ?,                                     ? )
+### Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 848,951 milliseconds ago.  The last packet sent successfully to the server was 848,963 milliseconds ago.
+	at org.apache.ibatis.exceptions.ExceptionFactory.wrapException(ExceptionFactory.java:30)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:199)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:184)
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:62)
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:58)
+	at com.sun.proxy.$Proxy2.insertSelective(Unknown Source)
+	at com.qiaoxun.test.Test.parse(Test.java:122)
+	at com.qiaoxun.test.Test.main(Test.java:152)
+Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
