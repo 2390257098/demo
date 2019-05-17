@@ -44,12 +44,6 @@
     cjid, cjstatus, cjname, keyword, last_chapter_title, searchnums, last_chapter, isjingpin, 
     xianmian, cover, ishot, issole, isnew, h, vipcanread, pingfen
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from qiswl_manhua
-    where id = #{id,jdbcType=INTEGER}
-  </select>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.qiaoxun.demo.pojo.QiswlManhua" useGeneratedKeys="true">
     insert into qiswl_manhua
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -267,4 +261,10 @@
   <update id="updateLastChapterByTitle" parameterType="java.lang.String">
     update qiswl_manhua set last_chapter = #{last_chapter,jdbcType=VARCHAR} where title=  #{title,jdbcType=VARCHAR}
   </update>
+  <update id="updateStatusByTitle" parameterType="java.lang.String">
+    update qiswl_manhua set status = 0 where title = #{title,jdbcType=VARCHAR}
+  </update>
+  <select id="selectTitles" resultType="java.lang.String">
+    select title from qiswl_manhua
+  </select>
 </mapper>
