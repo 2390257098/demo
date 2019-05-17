@@ -4,6 +4,8 @@ import com.qiaoxun.demo.pojo.QiswlManhua;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface QiswlManhuaDao {
@@ -15,4 +17,7 @@ public interface QiswlManhuaDao {
 
     void updateLastChapter(String title,String lastChapter);
 
+    void updateStatusByTitle(String title);
+
+    List<String> selectTitles();
 }
