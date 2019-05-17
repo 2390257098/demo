@@ -1,21 +1,19 @@
 
-Exception in thread "main" org.apache.ibatis.exceptions.PersistenceException:
-### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+更新时可能遇到的情况以及解决办法：
 
-The last packet successfully received from the server was 848,951 milliseconds ago.  The last packet sent successfully to the server was 848,963 milliseconds ago.
-### The error may exist in resources/QiswlManhuaDao.xml
-### The error may involve com.qiaoxun.demo.dao.QiswlManhuaDao.insertSelective-Inline
-### The error occurred while setting parameters
-### SQL: insert into qiswl_manhua      ( title,                                                          `view`,                                     auther,                       `desc`,                       mark,                                                                                      keyword,                       last_chapter_title,                              last_chapter,                                     cover )       values ( ?,                                                          ?,                                     ?,                       ?,                       ?,                                                                                      ?,                       ?,                              ?,                                     ? )
-### Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+    漫画更新、章节更新、漫画状态变更（是否完结）
 
-The last packet successfully received from the server was 848,951 milliseconds ago.  The last packet sent successfully to the server was 848,963 milliseconds ago.
-	at org.apache.ibatis.exceptions.ExceptionFactory.wrapException(ExceptionFactory.java:30)
-	at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:199)
-	at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:184)
-	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:62)
-	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:58)
-	at com.sun.proxy.$Proxy2.insertSelective(Unknown Source)
-	at com.qiaoxun.test.Test.parse(Test.java:122)
-	at com.qiaoxun.test.Test.main(Test.java:152)
-Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+    漫画更新
+
+    ------从数据库里拿出所有漫画名称，集合接收，获取当前漫画名称，判断该集合中是否包含当前漫画名称。
+        ------如果包含
+            ------获取当前漫画的状态，判断是完结状态还是更新状态
+                ------如果处于更新状态
+                    ------查看章节数有没有更新
+                        如果更新------爬取最新章节的图片，改该漫画在漫画表中的最新章节数字段，下载最新章节的图片，同时路径存入章节表
+                        如果未更新------输出提示一下，程序接着往下运行
+                ------如果处于完结状态
+                    ------修改漫画表中的状态字段
+        ------如果不包含
+            ------获取最新漫画的详细数据，入库（章节表和漫画表），类似于初始化的爬取过程，只是不从头开始，只爬取最新漫画的信息
+

@@ -27,7 +27,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
     Document document=null;
     List<String> imgUrlSqls=new ArrayList<>();
     QiswlManhua qiswlManhua=new QiswlManhua();
-    private  QiswlCapterWithBLOBs bloBs=new QiswlCapterWithBLOBs();
+    QiswlCapterWithBLOBs bloBs=new QiswlCapterWithBLOBs();
     public static int cartoons=0;
     String imgUrlSql;
 
@@ -72,7 +72,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
             //获取封面图片地址
             String image=elements.get(i-1).select("a > div.cover > img").attr("src").trim();
             //下载封面图片------保存封面图片路径
-            qiswlManhua.setImage(DownloadImg.download1(image,i));
+            qiswlManhua.setImage(methods.download1(image,i));
             //获取漫画url
             String url = init+elements.get(i-1).select("a").attr("href").trim();
             //带着漫画url再次发请求，进入漫画内部页
@@ -85,7 +85,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
             //横着的封面图地址
             String cover=document.select("body > div.cover-box > div.bg > img").attr("src").trim();
             //下载横着的封面图------并保存地址
-            String newCover=DownloadImg.download2(cover,i);
+            String newCover=methods.download2(cover,i);
             qiswlManhua.setCover(newCover);
             //描述
             String desc=document.select("#book-info > article > div.body").text();
@@ -124,13 +124,14 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                 //拿到图片地址，进行下载
                 Elements elements2=document.select(".read-article").select(".item");
                 System.out.println("第"+q+"话里边有"+elements2.size()+"张图片");
+                System.out.println("开始下载图片了！！！");
                 //j代表第q个章节里的第j张图片
                 for (int j=1;j<=elements2.size();j++){
                     System.out.println("正在下载第"+j+"张图片ing...");
                     //获取章节内部每张图的url
                     String imgUrl=elements2.get(j-1).select("img").attr("src").trim();
                     //下载每个章节里的图片
-                    String imgUrlSql=DownloadImg.download3(imgUrl,i,q,j);
+                    String imgUrlSql=methods.download3(imgUrl,i,q,j);
                     //获取每张图片的路径，存进集合，用完后清空
                     imgUrlSqls.add(imgUrlSql);
                 }
@@ -139,7 +140,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                 bloBs.setUpdateTime(date);
                 bloBs.setCreateTime(date);
                 bloBs.setImagelist(imgUrlSqls.toString());
-                bloBs.setManhuaId(i);
+                bloBs.setManhuaId(qiswlManhua.getId());
                 bloBs.setSort(q);
                 chapterService.insertSelective(bloBs);
 
@@ -149,6 +150,9 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
         }
     }
 
+    /**
+     * 数据更新
+     */
     @Override
     public void update() throws IOException {
         cookies=methods.login();
@@ -182,13 +186,14 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                     document = Jsoup.connect(chapterUrl.substring(0,chapterUrl.length()-1)+sql).cookies(cookies).get();
                     Elements elements2=document.select(".read-article").select(".item");
                     System.out.println("第"+(sql+1)+"话里边有"+elements2.size()+"张图片");
+                    System.out.println("开始下载图片了！！！");
                     //j代表第q个章节里的第j张图片
                     for (int j=1;j<=elements2.size();j++){
                         System.out.println("正在下载第"+j+"张图片ing...");
                         //获取章节内部每张图的url
                         String imgUrl=elements2.get(j-1).select("img").attr("src").trim();
                         //下载每个章节里的图片
-                        imgUrlSql=DownloadImg.download3(imgUrl,i,sql+1,j);
+                        imgUrlSql=methods.download3(imgUrl,i,sql+1,j);
                         //加进集合------入库后清空集合
                         imgUrlSqls.add(imgUrlSql);
                     }

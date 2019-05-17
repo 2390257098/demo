@@ -2,10 +2,11 @@ server:
   port: 8080
   tomcat:
     uri-encoding: UTF-8
+
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://212.64.83.217:3306/crawler?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+        url: jdbc:mysql://212.64.83.217:3306/crawler?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
         username: root
         password: houxu@900813
     thymeleaf:
