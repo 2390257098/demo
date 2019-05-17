@@ -2,17 +2,16 @@ package com.qiaoxun.demo.controller;
 
 
 
-import com.qiaoxun.demo.service.QiswlCapterService;
+
 import com.qiaoxun.demo.service.QiswlManhuaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
 
-@Controller
+@RestController
 public class QiswlManhuaController {
 
 
@@ -20,9 +19,8 @@ public class QiswlManhuaController {
     private QiswlManhuaService manhuaService;
 
     @GetMapping("/crawler")
-    public String crawler() throws IOException {
+    public void crawler() throws IOException {
         manhuaService.parse();
-        return "index";
     }
 
     @GetMapping("/update")

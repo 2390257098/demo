@@ -113,7 +113,6 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
             int chapters=Integer.parseInt(lastChapterTitle.substring(3,lastChapterTitle.length()-1));
             qiswlManhua.setLastChapter("第"+chapters+"话");
             qiswlManhua.setLastChapterTitle("第"+chapters+"话");
-            qiswlManhua.setId(i);
             //获取到的数据入库
             manhuaDao.insertSelective(qiswlManhua);
             //拿到新的url,再次发起请求

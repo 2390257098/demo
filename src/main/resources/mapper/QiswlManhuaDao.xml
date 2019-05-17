@@ -53,9 +53,6 @@
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.qiaoxun.demo.pojo.QiswlManhua" useGeneratedKeys="true">
     insert into qiswl_manhua
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="title != null">
         title,
       </if>
@@ -160,9 +157,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
