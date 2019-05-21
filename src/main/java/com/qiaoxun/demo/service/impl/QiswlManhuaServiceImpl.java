@@ -51,7 +51,9 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
         document = Jsoup.connect(initUrl).cookies(cookies).timeout(1000*60*2).post();
         //选择器定位
         Elements elements = document.select("#html_box").select(".item");
+
         cartoons=elements.size();
+
         //创建时间和更新时间
 
         qiswlManhua.setCreateTime(date);
@@ -61,8 +63,9 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
         //i表示漫画的顺序
         for (int i=1;i<=elements.size();i++) {
             System.out.println("这是第"+i+"个漫画");
-            //获取封面图片地址
-            String image=elements.get(i-1).select("a > div.cover > img").attr("src").trim();
+            //获取封面图片地址------选择器换过了，之前不是这个
+            String image=elements.get(i-1).select("a > div.bg > img").attr("src").trim();
+
             //下载封面图片------保存封面图片路径
             qiswlManhua.setImage(methods.download1(image,i));
             //获取漫画url
