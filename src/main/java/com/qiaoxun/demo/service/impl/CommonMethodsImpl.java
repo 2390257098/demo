@@ -3,6 +3,11 @@ package com.qiaoxun.demo.service.impl;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -107,9 +112,8 @@ public class CommonMethodsImpl{
 
         //请求url获取响应信息
         Connection.Response res = connect.ignoreContentType(true).method(Connection.Method.POST).execute();// 执行请求
-        // 获取返回的cookie
+        // 获取返回的cookie------
         System.out.println(res.cookies());
         return res.cookies();
     }
-
 }

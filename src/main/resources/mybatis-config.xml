@@ -28,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
 		<mapper resource="mapper/QiswlManhuaDao.xml"/>
 		<mapper resource="mapper/QiswlCapterDao.xml"/>
+		<mapper resource="mapper/MeiTuanShopInfoDao.xml"/>
 	</mappers>
 
 </configuration>

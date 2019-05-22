@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiaoxun.demo.dao.MeiTuanShopInfoDao">
+  <resultMap id="BaseResultMap" type="com.qiaoxun.demo.pojo.MeituanShopInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="crawler_date" jdbcType="TIMESTAMP" property="crawlerDate" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="avg_time" jdbcType="VARCHAR" property="avgTime" />
+    <result column="avg_cost" jdbcType="VARCHAR" property="avgCost" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="phone2" jdbcType="VARCHAR" property="phone2" />
+    <result column="is_new" jdbcType="TINYINT" property="isNew" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="score" jdbcType="VARCHAR" property="score" />
+    <result column="shop_no" jdbcType="VARCHAR" property="shopNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, phone, city, address, crawler_date, order_num, avg_time, avg_cost, `method`, 
+    phone2, is_new, `type`, score
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from meituan_shop_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from meituan_shop_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.qiaoxun.demo.pojo.MeituanShopInfo" useGeneratedKeys="true">
+    insert into meituan_shop_info (`name`, phone, city, 
+      address, crawler_date, order_num, 
+      avg_time, avg_cost, `method`, 
+      phone2, lebel, `type`, 
+      score)
+    values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{crawlerDate,jdbcType=TIMESTAMP}, #{orderNum,jdbcType=INTEGER}, 
+      #{avgTime,jdbcType=INTEGER}, #{avgCost,jdbcType=DECIMAL}, #{method,jdbcType=VARCHAR}, 
+      #{phone2,jdbcType=VARCHAR}, #{lebel,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{score,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.qiaoxun.demo.pojo.MeituanShopInfo" useGeneratedKeys="true">
+    insert into meituan_shop_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopNo != null">
+        `shop_no`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="crawlerDate != null">
+        crawler_date,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="avgTime != null">
+        avg_time,
+      </if>
+      <if test="avgCost != null">
+        avg_cost,
+      </if>
+      <if test="method != null">
+        `method`,
+      </if>
+      <if test="phone2 != null">
+        phone2,
+      </if>
+      <if test="isNew != null">
+        is_new,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopNo != null">
+        #{shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="crawlerDate != null">
+        #{crawlerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="avgTime != null">
+        #{avgTime,jdbcType=INTEGER},
+      </if>
+      <if test="avgCost != null">
+        #{avgCost,jdbcType=DECIMAL},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null">
+        #{phone2,jdbcType=VARCHAR},
+      </if>
+      <if test="isNew != null">
+        #{isNew,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qiaoxun.demo.pojo.MeituanShopInfo">
+    update meituan_shop_info
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="crawlerDate != null">
+        crawler_date = #{crawlerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="avgTime != null">
+        avg_time = #{avgTime,jdbcType=INTEGER},
+      </if>
+      <if test="avgCost != null">
+        avg_cost = #{avgCost,jdbcType=DECIMAL},
+      </if>
+      <if test="method != null">
+        `method` = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null">
+        phone2 = #{phone2,jdbcType=VARCHAR},
+      </if>
+      <if test="lebel != null">
+        lebel = #{lebel,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qiaoxun.demo.pojo.MeituanShopInfo">
+    update meituan_shop_info
+    set `name` = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      crawler_date = #{crawlerDate,jdbcType=TIMESTAMP},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      avg_time = #{avgTime,jdbcType=INTEGER},
+      avg_cost = #{avgCost,jdbcType=DECIMAL},
+      `method` = #{method,jdbcType=VARCHAR},
+      phone2 = #{phone2,jdbcType=VARCHAR},
+      lebel = #{lebel,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
