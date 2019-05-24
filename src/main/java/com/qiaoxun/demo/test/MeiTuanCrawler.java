@@ -10,19 +10,16 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class GoogleTest {
+public class MeiTuanCrawler {
 
-    static  Logger logger = LoggerFactory.getLogger(GoogleTest.class);
+    static  Logger logger = LoggerFactory.getLogger(MeiTuanCrawler.class);
     static MeituanShopInfo info=new MeituanShopInfo();
     static SqlSession sqlSession=MyBatisUtil.createSqlSession();
     static WebDriverWait wait = null;
