@@ -36,10 +36,10 @@ public class MeiTuanCrawler {
         //用代理ip
         //System.getProperties().setProperty("http.proxyHost", "123.172.68.180");
         //System.getProperties().setProperty("http.proxyPort", "");
-        ChromeOptions options = new ChromeOptions();
+        //ChromeOptions options = new ChromeOptions();
         // 设置代理ip
-        String ip = "112.87.70.171:9999";
-        options.addArguments("--proxy-server=http://" + ip);
+        //String ip = "t.16yun.cn:31111";
+        //options.addArguments("--proxy-server=http://" + ip);
 
         //                  是使用那个浏览器                                   chromedriver所在的位置
         System.setProperty("webdriver.chrome.driver", "D:\\dev\\tool\\google\\chromedriver.exe");
@@ -48,7 +48,7 @@ public class MeiTuanCrawler {
         //换个版本试试
         //System.setProperty("w","D:\\dev\\tool\\Chrome\\Chrome.74.0.3729.157.x32\\\\chromedriver.exe");
         //创建一个浏览器------这行代码的位置是固定的，不能放在前面
-        driver=new ChromeDriver(options);
+        driver=new ChromeDriver();
         wait=new WebDriverWait(driver, 10, 1);
         //加载页面（登陆页面）
         String loginUrl="http://h5.waimai.meituan.com/login?force=true&back_url=http%3A%2F%2Fh5.waimai.meituan.com%2Fwaimai%2Fmindex%2Fmine";
@@ -58,14 +58,16 @@ public class MeiTuanCrawler {
         driver.manage().window().maximize();//窗口最大化
         //定位对象时给10s 的时间, 如果10s 内还定位不到则抛出异常
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
+        driver.manage().getCookies();
         //等待一段时间------点击F12(不然登录时候的输入框不显示),切换到手机（触屏）模式,点击首页，重新定位(网络信号强的时候不用手动刷新)
-        Thread.sleep(1000*60*2);
+        Thread.sleep(1000*60);
 
         //城市不获取了，直接赋值
         info.setCity("杭州");
+        //获取品类
         String type=driver.findElement(By.className("_2qDABxIhG58DjS3SnGcdQ4")).getText();
         Thread.sleep(500);
+        //品类拆分存进数组
         String types[]=type.split("\n");
         for (int i=0;i<10;i++){
             if (i<5){
@@ -123,16 +125,16 @@ public class MeiTuanCrawler {
                 avgCost=avgCost.substring(2);
             }
             info.setAvgCost(avgCost);
-            Thread.sleep(1000);
+            Thread.sleep(2000);
 
             //driver.findElement(By.linkText(name)).click();
             //进入商家详情页------拿地址
             driver.findElement(By.xpath("//*[@id=\"wm-container\"]/div/div/div[4]/div/ul/li["+(i+1)+"]/a")).click();
-            Thread.sleep(1000);
+            Thread.sleep(2000);
 
             //点击商家------此处有坑，定位问题
             driver.findElement(By.xpath("//*[@id=\"scrollArea\"]/div[3]/nav/div[3]")).click();
-            Thread.sleep(1000);
+            Thread.sleep(2000);
             String address=driver.findElement(By.className("_1DIKnLUnCkmE6RVWwwhY-e")).getText();
             info.setAddress(address);
             //退回到商家列表页面
