@@ -3,7 +3,7 @@ package com.qiaoxun.demo.service.impl;
 import com.qiaoxun.demo.dao.MeiTuanShopInfoDao;
 import com.qiaoxun.demo.pojo.MeituanShopInfo;
 import com.qiaoxun.demo.service.MeiTuanShopInfoService;
-import com.qiaoxun.demo.test.GoogleTest;
+import com.qiaoxun.demo.test.MeiTuanCrawler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 public class MeiTuanShopInfoServiceImpl implements MeiTuanShopInfoService {
 
     MeituanShopInfo info=new MeituanShopInfo();
-    Logger logger = LoggerFactory.getLogger(GoogleTest.class);
+    Logger logger = LoggerFactory.getLogger(MeiTuanCrawler.class);
 
     @Resource
     private MeiTuanShopInfoDao infoDao;

@@ -44,11 +44,12 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
      * 爬取数据  下载图片  数据入库
      */
     @Override
-    public void parse() throws IOException {
+    public void parse() throws IOException, InterruptedException {
         cookies=methods.login();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
         document = Jsoup.connect(initUrl).cookies(cookies).timeout(1000*60*2).post();
+        Thread.sleep(500);
         //选择器定位
         Elements elements = document.select("#html_box").select(".item");
 
@@ -68,10 +69,12 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
 
             //下载封面图片------保存封面图片路径
             qiswlManhua.setImage(methods.download1(image,i));
+            Thread.sleep(1000);
             //获取漫画url
             String url = init+elements.get(i-1).select("a").attr("href").trim();
             //带着漫画url再次发请求，进入漫画内部页
             document = Jsoup.connect(url).cookies(cookies).get();
+            Thread.sleep(1000);
             //开始获取目标数据
 
             //名称
@@ -81,6 +84,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
             String cover=document.select("body > div.cover-box > div.bg > img").attr("src").trim();
             //下载横着的封面图------并保存地址
             String newCover=methods.download2(cover,i);
+            Thread.sleep(1000);
             qiswlManhua.setCover(newCover);
             //描述
             String desc=document.select("#book-info > article > div.body").text();
@@ -127,6 +131,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                     String imgUrl=elements2.get(j-1).select("img").attr("src").trim();
                     //下载每个章节里的图片
                     String imgUrlSql=methods.download3(imgUrl,i,q,j);
+                    Thread.sleep(1000);
                     //获取每张图片的路径，存进集合，用完后清空
                     imgUrlSqls.add(imgUrlSql);
                 }
@@ -149,7 +154,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
      * 数据更新
      */
     @Override
-    public void update() throws IOException {
+    public void update() throws IOException, InterruptedException {
         cookies=methods.login();
         String initUrl = "http://www.yymh8.com/index.php?m=&c=Mh&a=book_cate&p_reload=1&reload_time=1557799064903";
         // 直接获取DOM树，带着cookies去获取
@@ -161,6 +166,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
         for (int i=1;i<=cartoons;i++) {
             String url = "http://www.yymh8.com"+elements.get(i-1).select("a").attr("href").trim();
             document = Jsoup.connect(url).cookies(cookies).get();
+            Thread.sleep(1000);
             String title=document.select("body > div.cover-box > div.container > div.title").text();
             //判断是否有新漫画
             //false
@@ -187,6 +193,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                         int htmlLastChapter=Integer.parseInt(lastChapterTitle.substring(3,lastChapterTitle.length()-1));
                         for (int sqlLastChapter=Integer.parseInt(last.substring(1,last.length()-1));sqlLastChapter<htmlLastChapter;sqlLastChapter++){
                             document = Jsoup.connect(chapterUrl.substring(0,chapterUrl.length()-1)+sqlLastChapter).cookies(cookies).get();
+                            Thread.sleep(1000);
                             Elements elements2=document.select(".read-article").select(".item");
                             System.out.println("第"+(sqlLastChapter+1)+"话里边有"+elements2.size()+"张图片");
                             System.out.println("开始下载图片了！！！");
@@ -197,6 +204,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                                 String imgUrl=elements2.get(j-1).select("img").attr("src").trim();
                                 //下载每个章节里的图片
                                 imgUrlSql=methods.download3(imgUrl,i,sqlLastChapter+1,j);
+                                Thread.sleep(1000);
                                 //加进集合------入库后清空集合
                                 imgUrlSqls.add(imgUrlSql);
                             }
@@ -218,6 +226,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                 String image=elements.get(i-1).select("a > div.cover > img").attr("src").trim();
                 qiswlManhua.setImage(methods.download1(image,i));
                 document = Jsoup.connect(url).cookies(cookies).get();
+                Thread.sleep(1000);
                 qiswlManhua.setTitle(title);
                 String cover=document.select("body > div.cover-box > div.bg > img").attr("src").trim();
                 String newCover=methods.download2(cover,i);
@@ -242,6 +251,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                 for (int q=1;q<=chapters;q++){
                     String newUrl=chapter+q;
                     document = Jsoup.connect(newUrl).cookies(cookies).timeout(1000*60*2).get();
+                    Thread.sleep(1000);
                     Elements elements2=document.select(".read-article").select(".item");
                     System.out.println("第"+q+"话里边有"+elements2.size()+"张图片");
                     System.out.println("开始下载图片了！！！");
@@ -249,6 +259,7 @@ public class QiswlManhuaServiceImpl implements QiswlManhuaService {
                         System.out.println("正在下载第"+j+"张图片ing...");
                         String imgUrl=elements2.get(j-1).select("img").attr("src").trim();
                         String imgUrlSql=methods.download3(imgUrl,i,q,j);
+                        Thread.sleep(1000);
                         imgUrlSqls.add(imgUrlSql);
                     }
                     bloBs.setTitle("第"+q+"话");

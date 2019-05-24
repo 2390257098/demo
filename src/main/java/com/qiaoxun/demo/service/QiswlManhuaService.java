@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface QiswlManhuaService {
 
-    void parse() throws IOException;
+    void parse() throws IOException, InterruptedException;
 
-    void update() throws IOException;
+    void update() throws IOException, InterruptedException;
 }
