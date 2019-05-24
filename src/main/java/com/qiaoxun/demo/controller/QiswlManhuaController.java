@@ -21,13 +21,13 @@ public class QiswlManhuaController {
     private QiswlManhuaService manhuaService;
 
     @GetMapping("/crawler")
-    public String crawler() throws IOException {
+    public String crawler() throws IOException, InterruptedException {
         manhuaService.parse();
         return "/crawler";
     }
 
     @GetMapping("/update")
-    public String update() throws IOException {
+    public String update() throws IOException, InterruptedException {
         manhuaService.update();
         return "/update";
     }
