@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MeiTuanCrawler {
@@ -58,7 +59,9 @@ public class MeiTuanCrawler {
         driver.manage().window().maximize();//窗口最大化
         //定位对象时给10s 的时间, 如果10s 内还定位不到则抛出异常
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().getCookies();
+        //获取cookie
+        Cookie cookie= (Cookie) driver.manage().getCookies();
+        driver.manage().addCookie(cookie);
         //等待一段时间------点击F12(不然登录时候的输入框不显示),切换到手机（触屏）模式,点击首页，重新定位(网络信号强的时候不用手动刷新)
         Thread.sleep(1000*60);
 
@@ -137,6 +140,16 @@ public class MeiTuanCrawler {
             Thread.sleep(2000);
             String address=driver.findElement(By.className("_1DIKnLUnCkmE6RVWwwhY-e")).getText();
             info.setAddress(address);
+            driver.findElement(By.className("_1Xv10M_WIeMzLNwKVA8sEz")).click();
+            String html = Jsoup.parse(driver.getPageSource()).text();
+            if (html.contains("新店图标的url")){
+                info.setIsNew(1);
+            }
+            if (html.contains("美团专送图标的url")){
+                info.setMethod("美团配送");
+            }
+            String phone=driver.findElement(By.className("")).getText();
+            info.setPhone(phone);
             //退回到商家列表页面
             driver.navigate().back();
             Thread.sleep(2000);
@@ -146,7 +159,14 @@ public class MeiTuanCrawler {
         driver.navigate().back();
         Thread.sleep(10000);
     }
+    public void getInfo(){
+        String initUrl="http://h5.waimai.meituan.com/waimai/mindex/menu?dpShopId=&mtShopId=";
 
+        /*List<String > shopNos=sqlSession.getMapper(MeituanShopInfo.class).selectNo();
+        for (int i=0;i<shopNos.size();i++){
+            driver.get(initUrl+shopNos.get(i));
+        }*/
+    }
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
