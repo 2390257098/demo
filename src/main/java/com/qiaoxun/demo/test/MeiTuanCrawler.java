@@ -25,15 +25,16 @@ public class MeiTuanCrawler {
     static SqlSession sqlSession=MyBatisUtil.createSqlSession();
     static WebDriverWait wait = null;
     static final int i=0;
+    static Document doc = null;
 
 
     static WebDriver driver =null;
     /**
-     * 打开浏览器
+     * 打开浏览器------保存cookie
      * @return
      */
-    public static void getDocument() throws IOException, InterruptedException {
-        Document doc = null;
+    public static void saveCookie() throws IOException, InterruptedException {
+
         //用代理ip
         //System.getProperties().setProperty("http.proxyHost", "123.172.68.180");
         //System.getProperties().setProperty("http.proxyPort", "");
@@ -61,9 +62,22 @@ public class MeiTuanCrawler {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         //获取cookie
         Cookie cookie= (Cookie) driver.manage().getCookies();
+        //添加cookie
         driver.manage().addCookie(cookie);
         //等待一段时间------点击F12(不然登录时候的输入框不显示),切换到手机（触屏）模式,点击首页，重新定位(网络信号强的时候不用手动刷新)
         Thread.sleep(1000*60);
+
+        //关闭浏览器
+        //driver.close();
+        //driver.quit();
+
+    }
+
+    //分批次爬取，爬取动作做到温柔
+    /**
+     * 第一次拿数据，暴露在外的数据
+     */
+    public static void getInfo1() throws InterruptedException {
 
         //城市不获取了，直接赋值
         info.setCity("杭州");
@@ -84,25 +98,12 @@ public class MeiTuanCrawler {
             logger.info("我点击了"+types[i]+"！！！");
             //下载页面
             doc = Jsoup.parse(driver.getPageSource());
-            //解析页面------获取目标数据
-            parse(doc);
+
 
             //将页面滚动条拖到底部    但不会实现加载更多------这个问题有待解决
             //((JavascriptExecutor)driver).executeScript("window.scrollTo(0,45000);");
 
         }
-
-
-        //关闭浏览器
-        driver.close();
-        driver.quit();
-
-    }
-    /**
-     * 解析传过来的doc
-     * @param doc
-     */
-    public static void parse(Document doc) throws InterruptedException {
         if(doc == null){
             logger.info("doc is null, unable to continue! ");
             return ;
@@ -131,25 +132,7 @@ public class MeiTuanCrawler {
             Thread.sleep(2000);
 
             //driver.findElement(By.linkText(name)).click();
-            //进入商家详情页------拿地址
-            driver.findElement(By.xpath("//*[@id=\"wm-container\"]/div/div/div[4]/div/ul/li["+(i+1)+"]/a")).click();
-            Thread.sleep(2000);
 
-            //点击商家------此处有坑，定位问题
-            driver.findElement(By.xpath("//*[@id=\"scrollArea\"]/div[3]/nav/div[3]")).click();
-            Thread.sleep(2000);
-            String address=driver.findElement(By.className("_1DIKnLUnCkmE6RVWwwhY-e")).getText();
-            info.setAddress(address);
-            driver.findElement(By.className("_1Xv10M_WIeMzLNwKVA8sEz")).click();
-            String html = Jsoup.parse(driver.getPageSource()).text();
-            if (html.contains("新店图标的url")){
-                info.setIsNew(1);
-            }
-            if (html.contains("美团专送图标的url")){
-                info.setMethod("美团配送");
-            }
-            String phone=driver.findElement(By.className("")).getText();
-            info.setPhone(phone);
             //退回到商家列表页面
             driver.navigate().back();
             Thread.sleep(2000);
@@ -159,18 +142,50 @@ public class MeiTuanCrawler {
         driver.navigate().back();
         Thread.sleep(10000);
     }
-    public void getInfo(){
+
+    /**
+     * 第二次拿数据------拿商家地址、电话等信息
+     */
+    public void getInfo2() throws InterruptedException {
         String initUrl="http://h5.waimai.meituan.com/waimai/mindex/menu?dpShopId=&mtShopId=";
 
-        /*List<String > shopNos=sqlSession.getMapper(MeituanShopInfo.class).selectNo();
+        List< String > shopNos=sqlSession.getMapper(MeiTuanShopInfoDao.class).selectShopNo();
         for (int i=0;i<shopNos.size();i++){
+            info.setShopNo(shopNos.get(i));
+            //进入商家详情页------拿地址
             driver.get(initUrl+shopNos.get(i));
-        }*/
+
+            driver.findElement(By.xpath("//*[@id=\"wm-container\"]/div/div/div[4]/div/ul/li["+(i+1)+"]/a")).click();
+            Thread.sleep(2000);
+
+            //点击商家------此处有坑，定位问题
+            driver.findElement(By.xpath("//*[@id=\"scrollArea\"]/div[3]/nav/div[3]")).click();
+            Thread.sleep(2000);
+            //String address=driver.findElement(By.className("_1DIKnLUnCkmE6RVWwwhY-e")).getText();
+
+            //点击电话图标
+            driver.findElement(By.className("_1Xv10M_WIeMzLNwKVA8sEz")).click();
+            //下载页面，准备解析
+            doc=Jsoup.parse(driver.getPageSource());
+            String html = Jsoup.parse(driver.getPageSource()).text();
+            //新店标签的url
+            if (html.contains("http://p0.meituan.net/aichequan/eb83cb963e67bc0ea4db4d7aef69d62f2578.png")){
+                info.setIsNew(1);
+            }
+            //美团配送图标的classname
+            if (html.contains("_2yRf2EFs7dUwN9kNDYTrYg _3dNdV8OZMSSTfD1Ikr82Lg")){
+                info.setMethod("美团配送");
+            }
+            String phone=driver.findElement(By.className("")).getText();
+            info.setPhone(phone);
+            String address=doc.select("#scrollArea > div._3_v5L5O7Zac2VFevnq17-E > div > div._347vUMR0jKx6LIMqSnxIZw > div._3rlgdBOov8p5dp4fwJFNQO > div:nth-child(1) > div._3TRRkFr5YLsBe5i4G3Y0Yc._3UpJpE2r3K6PlnsEUkPva8 > p").text();
+            info.setAddress(address);
+            sqlSession.getMapper(MeiTuanShopInfoDao.class).updateAddressByNo(info);
+        }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
-        getDocument();
-
+        saveCookie();
+        getInfo1();
     }
 }
