@@ -19,7 +19,7 @@ public class CommonMethodsImpl{
     public String download1(String url, int cartoonId) throws IOException {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
-        savaImage(img, "D:\\cartoonApp"+"/bookimages/"+cartoonId, "/image.jpg");
+        //savaImage(img, "D:\\cartoonApp"+"/bookimages/"+cartoonId, "/image.jpg");
         return "/bookimages/"+cartoonId+"/image.jpg";
     }
 
@@ -27,7 +27,7 @@ public class CommonMethodsImpl{
     public String download2(String url, int cartoonId) throws IOException {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
-        savaImage(img, "D:\\cartoonApp"+"/bookimages/"+cartoonId, "/cover.jpg");
+        //savaImage(img, "D:\\cartoonApp"+"/bookimages/"+cartoonId, "/cover.jpg");
         return "/bookimages/"+cartoonId+"/cover.jpg";
     }
 
@@ -35,7 +35,7 @@ public class CommonMethodsImpl{
     public String download3(String url, int cartoonId, int chapterId, int imgId) throws IOException {
         Connection.Response response = Jsoup.connect(url).ignoreContentType(true).execute();
         byte[] img = response.bodyAsBytes();
-        savaImage(img, "D:\\cartoonApp"+"/bookimages/"+cartoonId+"/chapter"+chapterId, "/"+imgId+".jpg");
+        //savaImage(img, "D:\\cartoonApp"+"/bookimages/"+cartoonId+"/chapter"+chapterId, "/"+imgId+".jpg");
         return "/bookimages/"+cartoonId+"/chapter"+chapterId+"/"+imgId+".jpg";
     }
 

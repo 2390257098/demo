@@ -14,8 +14,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 public class MeiTuanCrawler {
@@ -30,18 +32,10 @@ public class MeiTuanCrawler {
 
     static WebDriver driver =null;
     /**
-     * 打开浏览器------保存cookie
+     * 打开浏览器------获取cookie
      * @return
      */
     public static void saveCookie() throws IOException, InterruptedException {
-
-        //用代理ip
-        //System.getProperties().setProperty("http.proxyHost", "123.172.68.180");
-        //System.getProperties().setProperty("http.proxyPort", "");
-        //ChromeOptions options = new ChromeOptions();
-        // 设置代理ip
-        //String ip = "t.16yun.cn:31111";
-        //options.addArguments("--proxy-server=http://" + ip);
 
         //                  是使用那个浏览器                                   chromedriver所在的位置
         System.setProperty("webdriver.chrome.driver", "D:\\dev\\tool\\google\\chromedriver.exe");
@@ -60,17 +54,85 @@ public class MeiTuanCrawler {
         driver.manage().window().maximize();//窗口最大化
         //定位对象时给10s 的时间, 如果10s 内还定位不到则抛出异常
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        //获取cookie
-        Cookie cookie= (Cookie) driver.manage().getCookies();
-        //添加cookie
-        driver.manage().addCookie(cookie);
+
         //等待一段时间------点击F12(不然登录时候的输入框不显示),切换到手机（触屏）模式,点击首页，重新定位(网络信号强的时候不用手动刷新)
         Thread.sleep(1000*60);
+        //获取cookie，写入本地文件
+        File cookieFile=new File("D:\\crawlerCookie/cookie.txt");
+        try {
+            cookieFile.delete();
+            cookieFile.createNewFile();
+            FileWriter fileWriter = new FileWriter(cookieFile);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            for (Cookie cookie:driver.manage().getCookies()){
+                bufferedWriter.write((cookie.getName()+";"+
+                        cookie.getValue()+";"+
+                        cookie.getDomain()+";"+
+                        cookie.getPath()+";"+
+                        cookie.getExpiry()+";"+
+                        cookie.isSecure()));
+                bufferedWriter.newLine();
+                //driver.manage().addCookie(cookie);
+            }
+
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
 
         //关闭浏览器
-        //driver.close();
-        //driver.quit();
+        driver.close();
+        driver.quit();
 
+    }
+
+    /**
+     * 找到cookie，添加
+     * @return
+     */
+    public static void getCookie(){
+        BufferedReader bufferedReader;
+        driver.get("http://h5.waimai.meituan.com/login?force=true&back_url=http%3A%2F%2Fh5.waimai.meituan.com%2Fwaimai%2Fmindex%2Fmine");
+        //doc = Jsoup.parse(driver.getPageSource());
+        //System.out.println(doc);
+        try {
+            File cookieFile = new File("D:\\crawlerCookie/cookie.txt");
+            FileReader fileReader = new FileReader(cookieFile);
+            bufferedReader = new BufferedReader(fileReader);
+
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null){
+                StringTokenizer stringTokenizer = new StringTokenizer(line, ";");
+                while (stringTokenizer.hasMoreTokens()){
+
+                    String name = stringTokenizer.nextToken();
+                    String value = stringTokenizer.nextToken();
+                    String domain = stringTokenizer.nextToken();
+                    String path = stringTokenizer.nextToken();
+                    Date expiry = null;
+                    String dt;
+
+                    if (!(dt = stringTokenizer.nextToken()).equals("null")){
+                        expiry = new Date(dt);
+                    }
+
+                    boolean isSecure = new Boolean(stringTokenizer.nextToken()).booleanValue();
+                    Cookie cookie = new Cookie(name, value,domain,path,expiry,isSecure);
+                    driver.manage().addCookie(cookie);
+                }
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        //driver.get("http://h5.waimai.meituan.com/waimai/mindex/home");
     }
 
     //分批次爬取，爬取动作做到温柔
@@ -78,7 +140,9 @@ public class MeiTuanCrawler {
      * 第一次拿数据，暴露在外的数据
      */
     public static void getInfo1() throws InterruptedException {
-
+        driver.get("http://h5.waimai.meituan.com/waimai/mindex/home");
+        doc = Jsoup.parse(driver.getPageSource());
+        System.out.println(doc);
         //城市不获取了，直接赋值
         info.setCity("杭州");
         //获取品类
@@ -92,16 +156,14 @@ public class MeiTuanCrawler {
             }else {
                 driver.findElement(By.xpath("//*[@id=\"wm-container\"]/div/div/div[2]/div[2]/a["+(i+1)+"]")).click();
             }
+            //将页面滚动条拖到底部------实现加载更多
+            ((JavascriptExecutor)driver).executeScript("window.scrollTo(0,45000);");
             //等待页面加载完全------爬的慢一点，对待对方服务器友好一点
-            Thread.sleep(1000*20);
+            Thread.sleep(1000*10);
             info.setType(types[i]);
             logger.info("我点击了"+types[i]+"！！！");
             //下载页面
             doc = Jsoup.parse(driver.getPageSource());
-
-
-            //将页面滚动条拖到底部    但不会实现加载更多------这个问题有待解决
-            //((JavascriptExecutor)driver).executeScript("window.scrollTo(0,45000);");
 
         }
         if(doc == null){
@@ -134,7 +196,7 @@ public class MeiTuanCrawler {
             //driver.findElement(By.linkText(name)).click();
 
             //退回到商家列表页面
-            driver.navigate().back();
+            //driver.navigate().back();
             Thread.sleep(2000);
             sqlSession.getMapper(MeiTuanShopInfoDao.class).insertSelective(info);
             sqlSession.commit();
@@ -186,6 +248,7 @@ public class MeiTuanCrawler {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         saveCookie();
+        getCookie();
         getInfo1();
     }
 }
