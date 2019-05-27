@@ -20,7 +20,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, `name`, phone, city, address, crawler_date, order_num, avg_time, avg_cost, `method`, 
-    phone2, is_new, `type`, score
+    phone2, is_new, `type`, score ,shop_no
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -196,5 +196,16 @@
       `type` = #{type,jdbcType=VARCHAR},
       score = #{score,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectShopNo" resultType="java.lang.String">
+    select shop_no from meituan_shop_info;
+  </select>
+  <update id="updateAddressByNo" parameterType="com.qiaoxun.demo.pojo.MeituanShopInfo">
+    update meituan_shop_info
+    set phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      `method` = #{method,jdbcType=VARCHAR},
+      is_new = #{isNew,jdbcType=TINYINT}
+      where shop_no = #{shopNo,jdbcType=INTEGER}
   </update>
 </mapper>
